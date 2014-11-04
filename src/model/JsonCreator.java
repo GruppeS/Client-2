@@ -18,6 +18,7 @@ public class JsonCreator {
 		userInfo.setAuthUserPassword(password);
 		userInfo.setAuthUserIsAdmin(false);
 		String gsonString = gson.toJson(userInfo);
+		System.out.println("Returning json");
 		return gsonString;
 	}
 }

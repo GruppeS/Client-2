@@ -16,12 +16,15 @@ public class Client implements Runnable {
 	private JsonCreator jsonCreator;
 	private ServerConnection serverConnection;
 	private Screen screen;
+	
+	private boolean authenticated;
 
 	public Client() {
 		encrypt = new Encryption();
 		jsonCreator = new JsonCreator();
 		serverConnection = new ServerConnection();
 		screen = new Screen();
+		authenticated = false;
 		
 		screen.getLoginPanel().addActionListener(new LoginPanelActionListener());		
 	}
@@ -29,6 +32,17 @@ public class Client implements Runnable {
 	public void run() {
 		screen.show(Screen.LOGINPANEL);
 		screen.setVisible(true);
+		System.out.println("Thread started");
+		
+		while(true)
+		{
+			if(authenticated)
+			{
+				// Get calendar
+				break;
+			}
+		}
+		
 	}
 	
 	public String authenticate(){
@@ -39,10 +53,12 @@ public class Client implements Runnable {
 		try {
 			email = screen.getLoginPanel().getEmail_Login();
 			password = encrypt.aesEncrypt(screen.getLoginPanel().getPassword_Login());
+			System.out.println("Password AES encrypted");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-
+		
+		System.out.println("Creating json");
 		return jsonCreator.login(email, password);
 	}
 
@@ -54,8 +70,26 @@ public class Client implements Runnable {
 
 			if(cmd.equals("LoginBtn"))
 			{
-				try {
-					serverConnection.connect(authenticate());
+				try {			
+					switch(serverConnection.connect(authenticate())) {
+					
+					case "0":
+						authenticated = true;
+						break;
+					case "1":
+						authenticated = false;
+						break;
+					case "2":
+						authenticated = false;
+						break;
+					case "3":
+						authenticated = false;
+						break;
+					case "4":
+						authenticated = false;
+						break;
+					}
+					
 				} catch (UnknownHostException e1) {
 					e1.printStackTrace();
 				} catch (IOException e1) {
