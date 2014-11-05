@@ -21,7 +21,7 @@ public class Screen extends JFrame
 	{
 		setTitle("Calendar");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 800, 600);
+		setBounds(0, 0, 400, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		setContentPane(contentPane);

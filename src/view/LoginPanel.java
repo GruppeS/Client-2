@@ -18,49 +18,74 @@ public class LoginPanel extends JPanel
 	private JLabel lblPleaseLoginBelow;
 	private JLabel lblUserEmail;
 	private JLabel lblPassword;
-	private JLabel lblIncorrect;
+	private JLabel lblIncorrectMail;
+	private JLabel lblIncorrectPassword;
+	private JLabel lblIncorrectPlatform;
+	private JLabel lblIncorrectActive;
 	private JTextField email_Login;
 	private JPasswordField password_Login;
 	private JButton btnLogin;
+	
 
 	public LoginPanel()
 	{
 		setLayout(null);
 
 		lblNewLabel = new JLabel("Calendar");
-		lblNewLabel.setBounds(60, 98, 194, 24);
+		lblNewLabel.setBounds(114, 75, 68, 24);
 		lblNewLabel.setFont(new Font("Calibri", Font.PLAIN, 19));
 		add(lblNewLabel);
 
 		lblPleaseLoginBelow = new JLabel("Please login below:");
-		lblPleaseLoginBelow.setBounds(99, 145, 108, 16);
+		lblPleaseLoginBelow.setBounds(96, 133, 108, 16);
 		lblPleaseLoginBelow.setFont(new Font("Calibri", Font.PLAIN, 12));
 		add(lblPleaseLoginBelow);
 
 		lblUserEmail = new JLabel("CBS-Mail:");
-		lblUserEmail.setBounds(83, 197, 52, 14);
+		lblUserEmail.setBounds(77, 175, 52, 14);
 		lblUserEmail.setFont(new Font("Calibri", Font.PLAIN, 11));
 		add(lblUserEmail);
 
 		lblPassword = new JLabel("Password:");
-		lblPassword.setBounds(86, 252, 49, 14);
+		lblPassword.setBounds(80, 230, 49, 14);
 		lblPassword.setFont(new Font("Calibri", Font.PLAIN, 11));
 		add(lblPassword);
 
-		lblIncorrect = new JLabel("Username or password is incorrect");
-		lblIncorrect.setBounds(77, 320, 165, 14);
-		lblIncorrect.setFont(new Font("Calibri", Font.ITALIC, 11));
-		lblIncorrect.setForeground(Color.red);
-		lblIncorrect.setVisible(false);
-		add(lblIncorrect);
+		lblIncorrectMail = new JLabel("Mail is incorrect");
+		lblIncorrectMail.setBounds(108, 295, 74, 14);
+		lblIncorrectMail.setFont(new Font("Calibri", Font.ITALIC, 11));
+		lblIncorrectMail.setForeground(Color.red);
+		lblIncorrectMail.setVisible(false);
+		add(lblIncorrectMail);
+		
+		lblIncorrectPassword = new JLabel("Password is incorrect");
+		lblIncorrectPassword.setBounds(108, 295, 74, 14);
+		lblIncorrectPassword.setFont(new Font("Calibri", Font.ITALIC, 11));
+		lblIncorrectPassword.setForeground(Color.red);
+		lblIncorrectPassword.setVisible(false);
+		add(lblIncorrectPassword);
+		
+		lblIncorrectPlatform = new JLabel("Platform is incorrect");
+		lblIncorrectPlatform.setBounds(108, 295, 74, 14);
+		lblIncorrectPlatform.setFont(new Font("Calibri", Font.ITALIC, 11));
+		lblIncorrectPlatform.setForeground(Color.red);
+		lblIncorrectPlatform.setVisible(false);
+		add(lblIncorrectPlatform);
+		
+		lblIncorrectActive = new JLabel("User is not active");
+		lblIncorrectActive.setBounds(108, 295, 74, 14);
+		lblIncorrectActive.setFont(new Font("Calibri", Font.ITALIC, 11));
+		lblIncorrectActive.setForeground(Color.red);
+		lblIncorrectActive.setVisible(false);
+		add(lblIncorrectActive);
 
 		email_Login = new JTextField();
-		email_Login.setBounds(86, 222, 143, 20);
+		email_Login.setBounds(80, 200, 143, 20);
 		email_Login.setColumns(10);
 		add(email_Login);
 
 		password_Login = new JPasswordField();
-		password_Login.setBounds(86, 276, 143, 20);
+		password_Login.setBounds(80, 254, 143, 20);
 		password_Login.setColumns(10);
 		add(password_Login);
 
@@ -75,9 +100,22 @@ public class LoginPanel extends JPanel
 		btnLogin.setActionCommand("LoginBtn");
 	}
 
-	public void incorrect()
+	public void incorrect(int action)
 	{
-		lblIncorrect.setVisible(true);
+		switch (action){
+		case 1:
+			lblIncorrectMail.setVisible(true);
+			break;
+		case 2:
+			lblIncorrectPassword.setVisible(true);
+			break;
+		case 3:
+			lblIncorrectActive.setVisible(true);
+			break;
+		case 4:
+			lblIncorrectPlatform.setVisible(true);
+			break;
+		}
 	}
 
 	public String getEmail_Login()
@@ -93,7 +131,10 @@ public class LoginPanel extends JPanel
 
 	public void reset()
 	{
-		lblIncorrect.setVisible(false);
+		lblIncorrectMail.setVisible(false);
+		lblIncorrectPassword.setVisible(false);
+		lblIncorrectPlatform.setVisible(false);
+		lblIncorrectActive.setVisible(false);
 		password_Login.setText("");
 	}
 }
