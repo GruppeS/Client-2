@@ -30,19 +30,24 @@ public class Client implements Runnable {
 	}
 
 	public void run() {
+		
+		try {
+			serverConnection.connect();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		screen.show(Screen.LOGINPANEL);
 		screen.setVisible(true);
-		System.out.println("Thread started");
 		
 		while(true)
 		{
 			if(authenticated)
 			{
-				// Get calendar
+//				screen.show(Screen.MAINMENU);
 				break;
 			}
 		}
-		
 	}
 	
 	public String authenticate(){
@@ -71,8 +76,11 @@ public class Client implements Runnable {
 			if(cmd.equals("LoginBtn"))
 			{
 				try {			
-					switch(serverConnection.connect(authenticate())) {
+					switch(serverConnection.login(authenticate())) {
 					
+					default:
+						authenticated = false;
+						break;
 					case "0":
 						authenticated = true;
 						break;

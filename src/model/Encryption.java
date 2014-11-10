@@ -1,39 +1,59 @@
 package model;
 
+import java.io.IOException;
 import java.security.Key;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
 public class Encryption {
 
 	private String encryptionKey = "cdc63491uAf24938";
-	private byte key = (byte) 3.1470;
+	private char[] key = {'j','a','v','a'};
+	int keyLength = key.length;
 
-	public byte[] xorEncrypt (String gson) {
+	public String xorEncrypt (String json) {
 
-		byte[] input = gson.getBytes();
+		char[] jsonArray = json.toCharArray();
 
-		byte[] encrypted = input;
+		int jsonLength = jsonArray.length;
+		char[] toEncrypt = new char[jsonLength];
 
-		for (int i=0; i<encrypted.length; i++)
+		for (int i=0; i<jsonLength; i++)
 		{
-			encrypted[i] = (byte) (encrypted[i] ^ key);
+			toEncrypt[i] = (char) (jsonArray[i] ^ key[i%keyLength]);
 		}
 
-		return encrypted;
+		String encrypted = new String(toEncrypt);
+
+		return new String(new BASE64Encoder().encodeBuffer(encrypted.getBytes()));
 	}
 
-	public String xorDecrypt (byte[] reply) {
+	public String xorDecrypt (String json) {
 
-		byte[] decrypted = reply;
+		BASE64Decoder decoder = new BASE64Decoder();
 
-		for (int i=0; i<decrypted.length; i++)
-		{
-			decrypted[i] = (byte) (decrypted[i] ^ key);
+		try {
+			json = new String(decoder.decodeBuffer(json));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
-		return decrypted.toString();
+		char[] jsonArray = json.toCharArray();
+
+		int jsonLength = jsonArray.length;
+
+		char[] toDecrypt = new char[jsonLength];
+
+		for (int i=0; i<jsonLength; i++)
+		{
+			toDecrypt[i] = (char) (jsonArray[i] ^ key[i%keyLength]);
+		}
+
+		return new String(toDecrypt);
 	}
 
 	public String aesEncrypt(String password) throws Exception {

@@ -1,43 +1,44 @@
 package model;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class ServerConnection {
 
 	private Encryption encrypt;
+	private Socket clientSocket;
+	private DataInputStream is;
+	private PrintStream os;
 
 	public ServerConnection() {
 		encrypt = new Encryption();
 	}
 
-	public String connect(String json) throws UnknownHostException, IOException {
-		
-		System.out.println("Establishing server connection");
-		byte[] reply = null;
-		
+	public void connect() throws IOException {
+
 		Socket clientSocket = new Socket("localhost", 8888);
 		System.out.println("Connection established");
 
-		byte[] message = encrypt.xorEncrypt(json);
-		DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
-		dos.writeInt(message.length);
-		dos.write(message);
-		dos.flush();
+		DataInputStream is = new DataInputStream(clientSocket.getInputStream());
+		PrintStream os = new PrintStream(clientSocket.getOutputStream());
+	}
 
-		DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
-		int length = dis.readInt();
+	public String login(String json) throws IOException {
+		String encrypted = encrypt.xorDecrypt(json);
 
-		if(length>0) {
-			reply = new byte[length];
-			dis.readFully(reply, 0, reply.length);
-		}
-		
-		clientSocket.close();
-		System.out.println("Socket closed");
+		os.println(encrypted);
+
+		String reply = is.readLine();
+
+		System.out.println("Encrypted: " + reply);
+		System.out.println("Decrypted: " + encrypt.xorDecrypt(reply));
 		return encrypt.xorDecrypt(reply);
+	}
+
+	public void close() throws IOException {
+		System.out.println("Closing socket");
+		clientSocket.close();
 	}
 }
