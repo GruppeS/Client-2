@@ -83,18 +83,23 @@ public class Client implements Runnable {
 						break;
 					case "0":
 						authenticated = true;
+						screen.getLoginPanel().reset();
 						break;
 					case "1":
 						authenticated = false;
+						screen.getLoginPanel().incorrect(1);
 						break;
 					case "2":
 						authenticated = false;
+						screen.getLoginPanel().incorrect(2);
 						break;
 					case "3":
 						authenticated = false;
+						screen.getLoginPanel().incorrect(3);
 						break;
 					case "4":
 						authenticated = false;
+						screen.getLoginPanel().incorrect(4);
 						break;
 					}
 					

@@ -107,10 +107,10 @@ public class LoginPanel extends JPanel
 			lblIncorrectMail.setVisible(true);
 			break;
 		case 2:
-			lblIncorrectPassword.setVisible(true);
+			lblIncorrectActive.setVisible(true);
 			break;
 		case 3:
-			lblIncorrectActive.setVisible(true);
+			lblIncorrectPassword.setVisible(true);
 			break;
 		case 4:
 			lblIncorrectPlatform.setVisible(true);
