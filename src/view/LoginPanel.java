@@ -90,7 +90,7 @@ public class LoginPanel extends JPanel
 		add(password_Login);
 
 		btnLogin = new JButton("Login");
-		btnLogin.setBounds(118, 446, 89, 23);
+		btnLogin.setBounds(115, 331, 89, 23);
 		add(btnLogin);
 	}
 

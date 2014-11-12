@@ -16,7 +16,7 @@ public class Client implements Runnable {
 	private JsonCreator jsonCreator;
 	private ServerConnection serverConnection;
 	private Screen screen;
-	
+
 	private boolean authenticated;
 
 	public Client() {
@@ -25,47 +25,53 @@ public class Client implements Runnable {
 		serverConnection = new ServerConnection();
 		screen = new Screen();
 		authenticated = false;
-		
-		screen.getLoginPanel().addActionListener(new LoginPanelActionListener());		
+
+		screen.getLoginPanel().addActionListener(new LoginPanelActionListener());	
 	}
 
 	public void run() {
-		
-		try {
-			serverConnection.connect();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+
 		screen.show(Screen.LOGINPANEL);
 		screen.setVisible(true);
-		
-		while(true)
-		{
-			if(authenticated)
-			{
-//				screen.show(Screen.MAINMENU);
-				break;
-			}
+
+		try {
+			serverConnection.connect();
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
 	}
-	
+
 	public String authenticate(){
-		
+
 		String email = null;
 		String password = null;
-		
+
 		try {
 			email = screen.getLoginPanel().getEmail_Login();
-			password = encrypt.aesEncrypt(screen.getLoginPanel().getPassword_Login());
-			System.out.println("Password AES encrypted");
+			password = screen.getLoginPanel().getPassword_Login();
+			password = encrypt.aesEncrypt(password);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		
-		System.out.println("Creating json");
 		return jsonCreator.login(email, password);
 	}
+
+	public void getCalendar()
+	{
+		String cbsCalendar = null;
+
+		try {
+			System.out.println("Asking for calendar");
+			cbsCalendar = serverConnection.send(jsonCreator.getCalendar());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println(cbsCalendar);
+		
+		System.out.println("Test over");
+	}
+
 
 	private class LoginPanelActionListener implements ActionListener
 	{
@@ -76,13 +82,16 @@ public class Client implements Runnable {
 			if(cmd.equals("LoginBtn"))
 			{
 				try {			
-					switch(serverConnection.login(authenticate())) {
-					
+					switch(serverConnection.send(authenticate())) {
+
 					default:
+						System.out.println("Authenticated false");
 						authenticated = false;
 						break;
 					case "0":
+						System.out.println("Authenticated true");
 						authenticated = true;
+						getCalendar();
 						screen.getLoginPanel().reset();
 						break;
 					case "1":
@@ -102,7 +111,6 @@ public class Client implements Runnable {
 						screen.getLoginPanel().incorrect(4);
 						break;
 					}
-					
 				} catch (UnknownHostException e1) {
 					e1.printStackTrace();
 				} catch (IOException e1) {
