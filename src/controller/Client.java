@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import model.Encryption;
+import model.Events;
 import model.JsonCreator;
 import model.ServerConnection;
 import view.Screen;
@@ -16,6 +17,7 @@ public class Client implements Runnable {
 	private JsonCreator jsonCreator;
 	private ServerConnection serverConnection;
 	private Screen screen;
+	private Events events;
 
 	private boolean authenticated;
 
@@ -49,27 +51,17 @@ public class Client implements Runnable {
 		try {
 			email = screen.getLoginPanel().getEmail_Login();
 			password = screen.getLoginPanel().getPassword_Login();
-			password = encrypt.aesEncrypt(password);
+//			password = encrypt.aesEncrypt(password);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		return jsonCreator.login(email, password);
 	}
 
-	public void getCalendar()
+	public void getCalendar() throws ClassNotFoundException, IOException
 	{
-		String cbsCalendar = null;
-
-		try {
-			System.out.println("Asking for calendar");
-			cbsCalendar = serverConnection.send(jsonCreator.getCalendar());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		System.out.println(cbsCalendar);
-		
-		System.out.println("Test over");
+			String calendar = serverConnection.send(jsonCreator.getCalendar());
+			events = jsonCreator.getEvents(calendar);
 	}
 
 
@@ -85,11 +77,10 @@ public class Client implements Runnable {
 					switch(serverConnection.send(authenticate())) {
 
 					default:
-						System.out.println("Authenticated false");
 						authenticated = false;
+						System.exit(0);
 						break;
 					case "0":
-						System.out.println("Authenticated true");
 						authenticated = true;
 						getCalendar();
 						screen.getLoginPanel().reset();
@@ -114,6 +105,8 @@ public class Client implements Runnable {
 				} catch (UnknownHostException e1) {
 					e1.printStackTrace();
 				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
 					e1.printStackTrace();
 				}
 			}

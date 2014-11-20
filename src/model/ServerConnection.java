@@ -1,26 +1,28 @@
 package model;
 
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ServerConnection {
 
 	private Socket clientSocket;
-	private DataInputStream is;
-	private PrintStream os;
+	private ObjectOutputStream output;
+	private ObjectInputStream input;
 
 	public void connect() throws IOException {
 		clientSocket = new Socket("localhost", 8888);
-		is = new DataInputStream(clientSocket.getInputStream());
-		os = new PrintStream(clientSocket.getOutputStream());
+		output = new ObjectOutputStream(clientSocket.getOutputStream());
+		output.flush();
+		input = new ObjectInputStream(clientSocket.getInputStream());
 	}
 
-	public String send(String json) throws IOException {
-		os.println(json);
+	public String send(String json) throws IOException, ClassNotFoundException {
+		output.writeObject(json);
+		output.flush();
 		System.out.println("Sending: " + json);
-		String reply = is.readLine();
+		String reply = (String) input.readObject();
 		System.out.println("Answer: " + reply);
 		return reply;
 	}
