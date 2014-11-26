@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class ServerConnection {
 
@@ -11,23 +12,38 @@ public class ServerConnection {
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 
-	public void connect() throws IOException {
-		clientSocket = new Socket("localhost", 8888);
-		output = new ObjectOutputStream(clientSocket.getOutputStream());
-		output.flush();
-		input = new ObjectInputStream(clientSocket.getInputStream());
+	public void connect() {
+		try {
+			clientSocket = new Socket("localhost", 8888);
+			output = new ObjectOutputStream(clientSocket.getOutputStream());
+			output.flush();
+			input = new ObjectInputStream(clientSocket.getInputStream());
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public String send(String json) throws IOException, ClassNotFoundException {
-		output.writeObject(json);
-		output.flush();
-		System.out.println("Sending: " + json);
-		String reply = (String) input.readObject();
-		System.out.println("Answer: " + reply);
+	public String send(String json) {
+		String reply = null;
+		try {
+			output.writeObject(json);
+			output.flush();
+			reply = (String) input.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return reply;
 	}
 
-	public void close() throws IOException {
-		clientSocket.close();
+	public void close() {
+		try {
+			clientSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

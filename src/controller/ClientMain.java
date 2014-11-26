@@ -1,6 +1,6 @@
-import controller.Client;
+package controller;
 
-public class Test {
+public class ClientMain {
 	
 	public static void main(String[] args) {
 		

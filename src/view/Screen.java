@@ -11,11 +11,11 @@ public class Screen extends JFrame
 	private static final long serialVersionUID = 1L;
 
 	public static final String LOGINPANEL = "1";
-	public static final String MAINMENU = "2";
+	public static final String MAINPANEL = "2";
 
 	private JPanel contentPane;
 	private LoginPanel loginPanel;
-	private MainPanel mainMenu;
+	private MainPanel mainPanel;
 
 	CardLayout c;
 
@@ -23,7 +23,7 @@ public class Screen extends JFrame
 	{
 		setTitle("Calendar");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 320, 440);
+		setBounds(0, 0, 400, 425);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		setContentPane(contentPane);
@@ -32,8 +32,8 @@ public class Screen extends JFrame
 		loginPanel = new LoginPanel();
 		contentPane.add(loginPanel, LOGINPANEL);
 		
-		mainMenu = new MainPanel();
-		contentPane.add(mainMenu, MAINMENU);
+		mainPanel = new MainPanel();
+		contentPane.add(mainPanel, MAINPANEL);
 
 		c = (CardLayout) getContentPane().getLayout();
 	}
@@ -42,8 +42,8 @@ public class Screen extends JFrame
 		return loginPanel;
 	}
 	
-	public MainPanel getMainMenu() {
-		return mainMenu;
+	public MainPanel getMainPanel() {
+		return mainPanel;
 	}
 
 	public void show(String card)

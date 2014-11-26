@@ -19,28 +19,20 @@ public class Client implements Runnable {
 	private Screen screen;
 	private Events events;
 
-	private boolean authenticated;
-
 	public Client() {
 		encrypt = new Encryption();
 		jsonCreator = new JsonCreator();
 		serverConnection = new ServerConnection();
 		screen = new Screen();
-		authenticated = false;
 
-		screen.getLoginPanel().addActionListener(new LoginPanelActionListener());	
+		screen.getLoginPanel().addActionListener(new LoginPanelActionListener());
+		screen.getMainPanel().addActionListener(new MainPanelActionListener());
 	}
 
 	public void run() {
 
 		screen.show(Screen.LOGINPANEL);
 		screen.setVisible(true);
-
-		try {
-			serverConnection.connect();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 	}
 
 	public String authenticate(){
@@ -48,23 +40,19 @@ public class Client implements Runnable {
 		String email = null;
 		String password = null;
 
-		try {
-			email = screen.getLoginPanel().getEmail_Login();
-			password = screen.getLoginPanel().getPassword_Login();
-			//			password = encrypt.aesEncrypt(password);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
+		email = screen.getLoginPanel().getEmail_Login();
+		password = screen.getLoginPanel().getPassword_Login();
+
 		return jsonCreator.login(email, password);
 	}
 
-	public void getCalendar() throws ClassNotFoundException, IOException
+	public void getCalendar()
 	{
 		String calendar = serverConnection.send(jsonCreator.getCalendar());
 		events = jsonCreator.getEvents(calendar);
 	}
 
-	public String getQuote() throws ClassNotFoundException, IOException
+	public String getQuote()
 	{
 		String qotd = serverConnection.send(jsonCreator.getQOTD());
 		qotd = jsonCreator.getQuote(qotd);
@@ -80,43 +68,43 @@ public class Client implements Runnable {
 
 			if(cmd.equals("LoginBtn"))
 			{
-				try {			
-					switch(serverConnection.send(authenticate())) {
+				serverConnection.connect();
 
-					default:
-						authenticated = false;
-						System.exit(0);
-						break;
-					case "0":
-						authenticated = true;
-						System.out.println(getQuote());
-						getCalendar();
-						screen.getLoginPanel().reset();
-						break;
-					case "1":
-						authenticated = false;
-						screen.getLoginPanel().incorrect(1);
-						break;
-					case "2":
-						authenticated = false;
-						screen.getLoginPanel().incorrect(2);
-						break;
-					case "3":
-						authenticated = false;
-						screen.getLoginPanel().incorrect(3);
-						break;
-					case "4":
-						authenticated = false;
-						screen.getLoginPanel().incorrect(4);
-						break;
-					}
-				} catch (UnknownHostException e1) {
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e1) {
-					e1.printStackTrace();
+				switch(serverConnection.send(authenticate())) {
+				default:
+					System.exit(0);
+					break;
+				case "0":
+					screen.getLoginPanel().reset();
+					screen.show(Screen.MAINPANEL);
+					screen.getMainPanel().setQuote(getQuote());
+					break;
+				case "1":
+					screen.getLoginPanel().incorrect(1);
+					break;
+				case "2":
+					screen.getLoginPanel().incorrect(2);
+					break;
+				case "3":
+					screen.getLoginPanel().incorrect(3);
+					break;
+				case "4":
+					screen.getLoginPanel().incorrect(4);
+					break;
 				}
+			}
+		}
+	}
+	private class MainPanelActionListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			String cmd = e.getActionCommand();
+			
+			if(cmd.equals("LogoutBtn"))
+			{
+				serverConnection.close();
+				screen.show(Screen.LOGINPANEL);
 			}
 		}
 	}

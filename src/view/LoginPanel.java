@@ -10,13 +10,12 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class LoginPanel extends JPanel
-{ 
+public class LoginPanel extends JPanel{ 
 	private static final long serialVersionUID = 1L;
 
-	private JLabel lblNewLabel;
+	private JLabel lblCalendar;
 	private JLabel lblPleaseLoginBelow;
-	private JLabel lblUserEmail;
+	private JLabel lblUsername;
 	private JLabel lblPassword;
 	private JLabel lblIncorrectMail;
 	private JLabel lblIncorrectPassword;
@@ -31,66 +30,66 @@ public class LoginPanel extends JPanel
 	{
 		setLayout(null);
 
-		lblNewLabel = new JLabel("Calendar");
-		lblNewLabel.setBounds(114, 75, 68, 24);
-		lblNewLabel.setFont(new Font("Calibri", Font.PLAIN, 19));
-		add(lblNewLabel);
+		lblCalendar = new JLabel("Calendar");
+		lblCalendar.setBounds(155, 74, 68, 24);
+		lblCalendar.setFont(new Font("Calibri", Font.PLAIN, 19));
+		add(lblCalendar);
 
 		lblPleaseLoginBelow = new JLabel("Please login below:");
-		lblPleaseLoginBelow.setBounds(96, 133, 108, 16);
+		lblPleaseLoginBelow.setBounds(137, 132, 108, 16);
 		lblPleaseLoginBelow.setFont(new Font("Calibri", Font.PLAIN, 12));
 		add(lblPleaseLoginBelow);
 
-		lblUserEmail = new JLabel("CBS-Mail:");
-		lblUserEmail.setBounds(77, 175, 52, 14);
-		lblUserEmail.setFont(new Font("Calibri", Font.PLAIN, 11));
-		add(lblUserEmail);
+		lblUsername = new JLabel("Username:");
+		lblUsername.setBounds(121, 174, 102, 14);
+		lblUsername.setFont(new Font("Calibri", Font.PLAIN, 11));
+		add(lblUsername);
 
 		lblPassword = new JLabel("Password:");
-		lblPassword.setBounds(80, 230, 49, 14);
+		lblPassword.setBounds(121, 229, 89, 14);
 		lblPassword.setFont(new Font("Calibri", Font.PLAIN, 11));
 		add(lblPassword);
 
 		lblIncorrectMail = new JLabel("Mail is incorrect");
-		lblIncorrectMail.setBounds(108, 295, 74, 14);
+		lblIncorrectMail.setBounds(148, 285, 234, 14);
 		lblIncorrectMail.setFont(new Font("Calibri", Font.ITALIC, 11));
 		lblIncorrectMail.setForeground(Color.red);
 		lblIncorrectMail.setVisible(false);
 		add(lblIncorrectMail);
 		
 		lblIncorrectPassword = new JLabel("Password is incorrect");
-		lblIncorrectPassword.setBounds(108, 295, 74, 14);
+		lblIncorrectPassword.setBounds(148, 298, 234, 14);
 		lblIncorrectPassword.setFont(new Font("Calibri", Font.ITALIC, 11));
 		lblIncorrectPassword.setForeground(Color.red);
 		lblIncorrectPassword.setVisible(false);
 		add(lblIncorrectPassword);
 		
 		lblIncorrectPlatform = new JLabel("Platform is incorrect");
-		lblIncorrectPlatform.setBounds(108, 295, 74, 14);
+		lblIncorrectPlatform.setBounds(148, 323, 234, 14);
 		lblIncorrectPlatform.setFont(new Font("Calibri", Font.ITALIC, 11));
 		lblIncorrectPlatform.setForeground(Color.red);
 		lblIncorrectPlatform.setVisible(false);
 		add(lblIncorrectPlatform);
 		
 		lblIncorrectActive = new JLabel("User is not active");
-		lblIncorrectActive.setBounds(108, 295, 74, 14);
+		lblIncorrectActive.setBounds(148, 310, 237, 14);
 		lblIncorrectActive.setFont(new Font("Calibri", Font.ITALIC, 11));
 		lblIncorrectActive.setForeground(Color.red);
 		lblIncorrectActive.setVisible(false);
 		add(lblIncorrectActive);
 
 		email_Login = new JTextField();
-		email_Login.setBounds(80, 200, 143, 20);
+		email_Login.setBounds(121, 199, 143, 20);
 		email_Login.setColumns(10);
 		add(email_Login);
 
 		password_Login = new JPasswordField();
-		password_Login.setBounds(80, 254, 143, 20);
+		password_Login.setBounds(121, 253, 143, 20);
 		password_Login.setColumns(10);
 		add(password_Login);
 
 		btnLogin = new JButton("Login");
-		btnLogin.setBounds(115, 331, 89, 23);
+		btnLogin.setBounds(155, 348, 89, 23);
 		add(btnLogin);
 	}
 
