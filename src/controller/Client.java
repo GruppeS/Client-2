@@ -51,7 +51,7 @@ public class Client implements Runnable {
 		try {
 			email = screen.getLoginPanel().getEmail_Login();
 			password = screen.getLoginPanel().getPassword_Login();
-//			password = encrypt.aesEncrypt(password);
+			//			password = encrypt.aesEncrypt(password);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -60,8 +60,15 @@ public class Client implements Runnable {
 
 	public void getCalendar() throws ClassNotFoundException, IOException
 	{
-			String calendar = serverConnection.send(jsonCreator.getCalendar());
-			events = jsonCreator.getEvents(calendar);
+		String calendar = serverConnection.send(jsonCreator.getCalendar());
+		events = jsonCreator.getEvents(calendar);
+	}
+
+	public String getQuote() throws ClassNotFoundException, IOException
+	{
+		String qotd = serverConnection.send(jsonCreator.getQOTD());
+		qotd = jsonCreator.getQuote(qotd);
+		return qotd;
 	}
 
 
@@ -82,6 +89,7 @@ public class Client implements Runnable {
 						break;
 					case "0":
 						authenticated = true;
+						System.out.println(getQuote());
 						getCalendar();
 						screen.getLoginPanel().reset();
 						break;

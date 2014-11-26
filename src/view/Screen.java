@@ -15,7 +15,7 @@ public class Screen extends JFrame
 
 	private JPanel contentPane;
 	private LoginPanel loginPanel;
-	private MainMenu mainMenu;
+	private MainPanel mainMenu;
 
 	CardLayout c;
 
@@ -32,7 +32,7 @@ public class Screen extends JFrame
 		loginPanel = new LoginPanel();
 		contentPane.add(loginPanel, LOGINPANEL);
 		
-		mainMenu = new MainMenu();
+		mainMenu = new MainPanel();
 		contentPane.add(mainMenu, MAINMENU);
 
 		c = (CardLayout) getContentPane().getLayout();
@@ -42,7 +42,7 @@ public class Screen extends JFrame
 		return loginPanel;
 	}
 	
-	public MainMenu getMainMenu() {
+	public MainPanel getMainMenu() {
 		return mainMenu;
 	}
 
