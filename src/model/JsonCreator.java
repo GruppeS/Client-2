@@ -1,6 +1,7 @@
 package model;
 
-import model.jsonClasses.GetCalendar;
+import model.jsonClasses.Events;
+import model.jsonClasses.Forecasts;
 import model.jsonClasses.QOTD;
 import model.jsonClasses.UserInfo;
 
@@ -10,16 +11,16 @@ import com.google.gson.GsonBuilder;
 public class JsonCreator {
 	private Gson gson;
 	private UserInfo userInfo;
-	private GetCalendar getCalendar;
 	private Events events;
 	private QOTD qotd;
+	private Forecasts forecasts;
 	
 	public JsonCreator(){
 		gson = new GsonBuilder().create();
 		userInfo = new UserInfo();
-		getCalendar = new GetCalendar();
 		events = new Events();
 		qotd = new QOTD();
+		forecasts = new Forecasts();
 	}
 	
 	public String login(String email, String password)
@@ -30,9 +31,9 @@ public class JsonCreator {
 		return gsonString;
 	}
 	
-	public String getCalendar()
+	public String setCalendar()
 	{
-		String gsonString = gson.toJson(getCalendar);
+		String gsonString = gson.toJson(events);
 		return gsonString;
 	}
 	
@@ -42,15 +43,26 @@ public class JsonCreator {
 		return events;
 	}
 	
-	public String getQOTD()
+	public String setQOTD()
 	{
 		String gsonString = gson.toJson(qotd);
 		return gsonString;
 	}
 	
-	public String getQuote(String quote)
+	public String getQOTD(String quote)
 	{
 		qotd = gson.fromJson(quote, QOTD.class);
 		return qotd.getQuote();
+	}
+
+	public String setForecast()
+	{
+		String gsonString = gson.toJson(forecasts);
+		return gsonString;
+	}
+	
+	public void getForecast(String forecasts)
+	{
+		this.forecasts = gson.fromJson(forecasts, Forecasts.class);
 	}
 }

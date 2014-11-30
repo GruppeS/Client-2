@@ -1,9 +1,10 @@
-package model;
+package model.jsonClasses;
 
 import java.util.ArrayList;
 
 public class Events {
 	
+	private String overallID = "getCalendar";
 	ArrayList<Event> events = new ArrayList<Event>();
  
     public ArrayList<Event> getEvents() {

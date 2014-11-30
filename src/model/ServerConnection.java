@@ -28,9 +28,11 @@ public class ServerConnection {
 	public String send(String json) {
 		String reply = null;
 		try {
+			System.out.println(json);
 			output.writeObject(json);
 			output.flush();
 			reply = (String) input.readObject();
+			System.out.println(reply);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -2,25 +2,22 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.UnknownHostException;
 
-import model.Encryption;
-import model.Events;
 import model.JsonCreator;
 import model.ServerConnection;
+import model.jsonClasses.Events;
+import model.jsonClasses.Forecasts;
 import view.Screen;
 
 public class Client implements Runnable {
 
-	private Encryption encrypt;
 	private JsonCreator jsonCreator;
 	private ServerConnection serverConnection;
 	private Screen screen;
 	private Events events;
+	private Forecasts forecasts;
 
 	public Client() {
-		encrypt = new Encryption();
 		jsonCreator = new JsonCreator();
 		serverConnection = new ServerConnection();
 		screen = new Screen();
@@ -48,15 +45,22 @@ public class Client implements Runnable {
 
 	public void getCalendar()
 	{
-		String calendar = serverConnection.send(jsonCreator.getCalendar());
+		String calendar = serverConnection.send(jsonCreator.setCalendar());
 		events = jsonCreator.getEvents(calendar);
 	}
 
 	public String getQuote()
 	{
-		String qotd = serverConnection.send(jsonCreator.getQOTD());
-		qotd = jsonCreator.getQuote(qotd);
+		String qotd = serverConnection.send(jsonCreator.setQOTD());
+		qotd = jsonCreator.getQOTD(qotd);
 		return qotd;
+	}
+	
+	public void getForecast()
+	{
+		String forecast = serverConnection.send(jsonCreator.setForecast());
+		jsonCreator.getForecast(forecast);
+		System.out.println(forecasts.getForecasts());
 	}
 
 
@@ -78,6 +82,9 @@ public class Client implements Runnable {
 					screen.getLoginPanel().reset();
 					screen.show(Screen.MAINPANEL);
 					screen.getMainPanel().setQuote(getQuote());
+					getCalendar();
+					getForecast();
+//					screen.getMainPanel().setForecast(getForecast());
 					break;
 				case "1":
 					screen.getLoginPanel().incorrect(1);
