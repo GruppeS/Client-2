@@ -61,8 +61,9 @@ public class JsonCreator {
 		return gsonString;
 	}
 	
-	public void getForecast(String forecasts)
+	public Forecasts getForecast(String forecasts)
 	{
 		this.forecasts = gson.fromJson(forecasts, Forecasts.class);
+		return this.forecasts;
 	}
 }

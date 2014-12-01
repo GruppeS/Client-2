@@ -10,7 +10,4 @@ public class Events {
     public ArrayList<Event> getEvents() {
         return events;
     }
-    public void setEvents(ArrayList<Event> event) {
-        this.events = event;
-    }
 }

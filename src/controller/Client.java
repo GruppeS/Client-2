@@ -59,8 +59,7 @@ public class Client implements Runnable {
 	public void getForecast()
 	{
 		String forecast = serverConnection.send(jsonCreator.setForecast());
-		jsonCreator.getForecast(forecast);
-		System.out.println(forecasts.getForecasts());
+		forecasts = jsonCreator.getForecast(forecast);
 	}
 
 
@@ -84,7 +83,6 @@ public class Client implements Runnable {
 					screen.getMainPanel().setQuote(getQuote());
 					getCalendar();
 					getForecast();
-//					screen.getMainPanel().setForecast(getForecast());
 					break;
 				case "1":
 					screen.getLoginPanel().incorrect(1);
