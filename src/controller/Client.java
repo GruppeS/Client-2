@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import model.JsonCreator;
 import model.ServerConnection;
@@ -56,10 +57,22 @@ public class Client implements Runnable {
 		return qotd;
 	}
 	
-	public void getForecast()
+	public Vector<Vector<Object>> getForecast()
 	{
 		String forecast = serverConnection.send(jsonCreator.setForecast());
 		forecasts = jsonCreator.getForecast(forecast);
+		
+		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+		
+		for(int i = 0; i<7; i++) {
+			Vector<Object> row = new Vector<Object>();
+			row.addElement(forecasts.getForecasts().get(i).getDate().substring(0,10));
+			row.addElement(forecasts.getForecasts().get(i).getCelsius());
+			row.addElement(forecasts.getForecasts().get(i).getDesc());
+			data.addElement(row);
+		}
+		
+		return data;
 	}
 
 
@@ -81,8 +94,8 @@ public class Client implements Runnable {
 					screen.getLoginPanel().reset();
 					screen.show(Screen.MAINPANEL);
 					screen.getMainPanel().setQuote(getQuote());
-					getCalendar();
-					getForecast();
+					screen.getMainPanel().setWeather(getForecast());
+//					getCalendar();
 					break;
 				case "1":
 					screen.getLoginPanel().incorrect(1);
