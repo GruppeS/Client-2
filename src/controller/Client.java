@@ -25,6 +25,7 @@ public class Client implements Runnable {
 
 		screen.getLoginPanel().addActionListener(new LoginPanelActionListener());
 		screen.getMainPanel().addActionListener(new MainPanelActionListener());
+		screen.getCalendarPanel().addActionListener(new CalendarPanelActionListener());
 	}
 
 	public void run() {
@@ -44,23 +45,17 @@ public class Client implements Runnable {
 		return jsonCreator.login(email, password);
 	}
 
-	public void getCalendar()
-	{
-		String calendar = serverConnection.send(jsonCreator.setCalendar());
-		events = jsonCreator.getEvents(calendar);
-	}
-
 	public String getQuote()
 	{
-		String qotd = serverConnection.send(jsonCreator.setQOTD());
-		qotd = jsonCreator.getQOTD(qotd);
+		String qotd = serverConnection.send(jsonCreator.getQOTD());
+		qotd = jsonCreator.setQOTD(qotd);
 		return qotd;
 	}
 	
 	public Vector<Vector<Object>> getForecast()
 	{
-		String forecast = serverConnection.send(jsonCreator.setForecast());
-		forecasts = jsonCreator.getForecast(forecast);
+		String forecast = serverConnection.send(jsonCreator.getForecast());
+		forecasts = jsonCreator.setForecast(forecast);
 		
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
 		
@@ -71,7 +66,25 @@ public class Client implements Runnable {
 			row.addElement(forecasts.getForecasts().get(i).getDesc());
 			data.addElement(row);
 		}
+		return data;
+	}
+	
+	public Vector<Vector<Object>> getCalendar()
+	{
+		String calendar = serverConnection.send(jsonCreator.getEvents());
+		events = jsonCreator.setEvents(calendar);
 		
+		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+		
+		for(int i = 0; i<events.getEvents().size(); i++) {
+			Vector<Object> row = new Vector<Object>();
+			row.addElement(events.getEvents().get(i).getType());
+			row.addElement(events.getEvents().get(i).getDescription());
+			row.addElement((events.getEvents().get(i).getStartdate()).toString().substring(0,16));
+			row.addElement((events.getEvents().get(i).getEnddate()).toString().substring(0,16));
+			row.addElement(events.getEvents().get(i).getLocation());
+			data.addElement(row);
+		}
 		return data;
 	}
 
@@ -95,7 +108,6 @@ public class Client implements Runnable {
 					screen.show(Screen.MAINPANEL);
 					screen.getMainPanel().setQuote(getQuote());
 					screen.getMainPanel().setWeather(getForecast());
-//					getCalendar();
 					break;
 				case "1":
 					screen.getLoginPanel().incorrect(1);
@@ -119,10 +131,28 @@ public class Client implements Runnable {
 		{
 			String cmd = e.getActionCommand();
 			
+			if(cmd.equals("CalendarBtn"))
+			{
+				screen.getCalendarPanel().setCalendar(getCalendar());
+				screen.show(Screen.CALENDARPANEL);
+			}
+			
 			if(cmd.equals("LogoutBtn"))
 			{
 				serverConnection.close();
 				screen.show(Screen.LOGINPANEL);
+			}
+		}
+	}
+	private class CalendarPanelActionListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			String cmd = e.getActionCommand();
+			
+			if(cmd.equals("BackBtn"))
+			{
+				screen.show(Screen.MAINPANEL);
 			}
 		}
 	}

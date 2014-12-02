@@ -22,10 +22,8 @@ public class MainPanel extends JPanel {
 	
 	Vector<Object> columnNames = new Vector<Object>();
 	private JLabel lblWeatherForecast;
+	private JButton btnCalendar;
 
-	/**
-	 * Create the panel.
-	 */
 	public MainPanel() {
 		setLayout(null);
 
@@ -41,7 +39,7 @@ public class MainPanel extends JPanel {
 		add(lblQuoteOfThe);
 
 		btnLogOut = new JButton("Log out");
-		btnLogOut.setBounds(237, 349, 99, 26);
+		btnLogOut.setBounds(10, 349, 100, 26);
 		add(btnLogOut);
 		
 		scrollPane = new JScrollPane();
@@ -51,11 +49,17 @@ public class MainPanel extends JPanel {
 		lblWeatherForecast = new JLabel("Weather forecast:");
 		lblWeatherForecast.setBounds(49, 28, 131, 14);
 		add(lblWeatherForecast);
+		
+		btnCalendar = new JButton("Calendar");
+		btnCalendar.setBounds(273, 349, 100, 26);
+		add(btnCalendar);
 	}
 
 	public void addActionListener(ActionListener l) {
 		btnLogOut.addActionListener(l);
 		btnLogOut.setActionCommand("LogoutBtn");
+		btnCalendar.addActionListener(l);
+		btnCalendar.setActionCommand("CalendarBtn");
 	}
 	
 	public void setWeather(Vector<?> data) {

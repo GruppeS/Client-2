@@ -1,6 +1,7 @@
 package model.jsonClasses;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Event {
 	private String activityid;
@@ -12,6 +13,8 @@ public class Event {
 	private String createdby;
 	private ArrayList<String> start;
 	private ArrayList<String> end;
+	private Date startDate;
+	private Date endDate;
 
 	public Event(String activityid, String eventid, String type, String title,
 			String description, String location, String createdby, ArrayList<String> start,
@@ -55,11 +58,27 @@ public class Event {
 		return createdby;
 	}
 
-	public ArrayList<String> getStart(){
+	@SuppressWarnings("rawtypes")
+	public ArrayList getStart() {
 		return start;
 	}
 
-	public ArrayList<String> getEnd(){
+	@SuppressWarnings("rawtypes")
+	public ArrayList getEnd() {
 		return end;
+	}
+
+	public void setStartdate(Date start) {
+		this.startDate = start;
+	}
+	public Date getStartdate(){
+		return startDate;
+	}
+
+	public void setEnddate(Date end) {
+		this.endDate = end;
+	}
+	public Date getEnddate(){
+		return endDate;
 	}
 }

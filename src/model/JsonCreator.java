@@ -31,37 +31,37 @@ public class JsonCreator {
 		return gsonString;
 	}
 	
-	public String setCalendar()
+	public String getEvents()
 	{
 		String gsonString = gson.toJson(events);
 		return gsonString;
 	}
 	
-	public Events getEvents(String calendar)
+	public Events setEvents(String calendar)
 	{
 		events = gson.fromJson(calendar, Events.class);
 		return events;
 	}
 	
-	public String setQOTD()
+	public String getQOTD()
 	{
 		String gsonString = gson.toJson(qotd);
 		return gsonString;
 	}
 	
-	public String getQOTD(String quote)
+	public String setQOTD(String quote)
 	{
 		qotd = gson.fromJson(quote, QOTD.class);
 		return qotd.getQuote();
 	}
 
-	public String setForecast()
+	public String getForecast()
 	{
 		String gsonString = gson.toJson(forecasts);
 		return gsonString;
 	}
 	
-	public Forecasts getForecast(String forecasts)
+	public Forecasts setForecast(String forecasts)
 	{
 		this.forecasts = gson.fromJson(forecasts, Forecasts.class);
 		return this.forecasts;
