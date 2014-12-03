@@ -24,6 +24,7 @@ public class LoginPanel extends JPanel{
 	private JTextField email_Login;
 	private JPasswordField password_Login;
 	private JButton btnLogin;
+	private JButton btnExit;
 	
 
 	public LoginPanel()
@@ -51,7 +52,7 @@ public class LoginPanel extends JPanel{
 		add(lblPassword);
 
 		lblIncorrectMail = new JLabel("Mail is incorrect");
-		lblIncorrectMail.setBounds(148, 285, 234, 14);
+		lblIncorrectMail.setBounds(161, 284, 234, 14);
 		lblIncorrectMail.setFont(new Font("Calibri", Font.ITALIC, 11));
 		lblIncorrectMail.setForeground(Color.red);
 		lblIncorrectMail.setVisible(false);
@@ -72,7 +73,7 @@ public class LoginPanel extends JPanel{
 		add(lblIncorrectPlatform);
 		
 		lblIncorrectActive = new JLabel("User is not active");
-		lblIncorrectActive.setBounds(148, 310, 237, 14);
+		lblIncorrectActive.setBounds(158, 310, 237, 14);
 		lblIncorrectActive.setFont(new Font("Calibri", Font.ITALIC, 11));
 		lblIncorrectActive.setForeground(Color.red);
 		lblIncorrectActive.setVisible(false);
@@ -89,14 +90,20 @@ public class LoginPanel extends JPanel{
 		add(password_Login);
 
 		btnLogin = new JButton("Login");
-		btnLogin.setBounds(155, 348, 89, 23);
+		btnLogin.setBounds(152, 348, 89, 23);
 		add(btnLogin);
+		
+		btnExit = new JButton("Exit");
+		btnExit.setBounds(281, 22, 89, 23);
+		add(btnExit);
 	}
 
 	public void addActionListener(ActionListener l)
 	{
 		btnLogin.addActionListener(l);
 		btnLogin.setActionCommand("LoginBtn");
+		btnExit.addActionListener(l);
+		btnExit.setActionCommand("ExitBtn");
 	}
 
 	public void incorrect(int action)

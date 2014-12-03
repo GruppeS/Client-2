@@ -123,6 +123,10 @@ public class Client implements Runnable {
 					break;
 				}
 			}
+			if(cmd.equals("ExitBtn"))
+			{
+				System.exit(0);
+			}
 		}
 	}
 	private class MainPanelActionListener implements ActionListener

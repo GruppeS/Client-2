@@ -21,7 +21,7 @@ public class ServerConnection {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.exit(0);
 		}
 	}
 
@@ -36,7 +36,7 @@ public class ServerConnection {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.exit(0);
 		}
 		return reply;
 	}
