@@ -16,27 +16,25 @@ public class CalendarPanel extends JPanel {
 	private JTable table;
 
 	Vector<Object> columnNames = new Vector<Object>();
+	private JButton btnCalendars;
 	
 	public CalendarPanel() {
 		setLayout(null);
 		
 		btnBack = new JButton("Back");
-		btnBack.setBounds(20, 359, 89, 23);
+		btnBack.setBounds(20, 359, 97, 23);
 		add(btnBack);
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 21, 341, 321);
 		add(scrollPane);
-
+		
+		btnCalendars = new JButton("Calendars");
+		btnCalendars.setBounds(264, 359, 97, 23);
+		add(btnCalendars);
 	}
 	
-	public void addActionListener(ActionListener l)
-	{
-		btnBack.addActionListener(l);
-		btnBack.setActionCommand("BackBtn");
-	}
-	
-	public void setCalendar(Vector<?> data) {
+	public void setEvents(Vector<?> data) {
 		columnNames = new Vector<Object>();
 		columnNames.add("Type");
 		columnNames.add("Course");
@@ -46,5 +44,13 @@ public class CalendarPanel extends JPanel {
 		table = new JTable(data, columnNames);
 		table.setEnabled(false);
 		scrollPane.setViewportView(table);
+	}
+	
+	public void addActionListener(ActionListener l)
+	{
+		btnCalendars.addActionListener(l);
+		btnCalendars.setActionCommand("CalendarsBtn");
+		btnBack.addActionListener(l);
+		btnBack.setActionCommand("BackBtn");
 	}
 }

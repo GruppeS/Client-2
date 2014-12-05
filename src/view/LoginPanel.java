@@ -124,7 +124,7 @@ public class LoginPanel extends JPanel{
 		}
 	}
 
-	public String getEmail_Login()
+	public String getUsername_Login()
 	{
 		return email_Login.getText();
 	}

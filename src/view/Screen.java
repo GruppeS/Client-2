@@ -13,11 +13,13 @@ public class Screen extends JFrame
 	public static final String LOGINPANEL = "1";
 	public static final String MAINPANEL = "2";
 	public static final String CALENDARPANEL = "3";
+	public static final String CALENDARLISTPANEL = "4";
 
 	private JPanel contentPane;
 	private LoginPanel loginPanel;
 	private MainPanel mainPanel;
 	private CalendarPanel calendarPanel;
+	private CalendarListPanel calendarListPanel;
 
 	CardLayout c;
 
@@ -39,6 +41,9 @@ public class Screen extends JFrame
 		
 		calendarPanel = new CalendarPanel();
 		contentPane.add(calendarPanel, CALENDARPANEL);
+		
+		calendarListPanel = new CalendarListPanel();
+		contentPane.add(calendarListPanel, CALENDARLISTPANEL);
 
 		c = (CardLayout) getContentPane().getLayout();
 	}
@@ -53,6 +58,10 @@ public class Screen extends JFrame
 	
 	public CalendarPanel getCalendarPanel() {
 		return calendarPanel;
+	}
+	
+	public CalendarListPanel getCalendarListPanel() {
+		return calendarListPanel;
 	}
 
 	public void show(String card)
