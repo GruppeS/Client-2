@@ -1,7 +1,10 @@
 package model;
 
+import java.util.Date;
+
 import model.jsonClasses.Calendar;
 import model.jsonClasses.Calendars;
+import model.jsonClasses.Event;
 import model.jsonClasses.Events;
 import model.jsonClasses.Forecasts;
 import model.jsonClasses.QOTD;
@@ -43,7 +46,8 @@ public class JsonCreator {
 		return gsonString;
 	}
 
-	public Calendars setCalendars(String calendars) {
+	public Calendars setCalendars(String calendars)
+	{
 		this.calendars = gson.fromJson(calendars, Calendars.class);
 		return this.calendars;
 	}
@@ -83,18 +87,34 @@ public class JsonCreator {
 		this.events = gson.fromJson(events, Events.class);
 		return this.events;
 	}
+	
+	public String getCustomEvents(String calendar)
+	{
+		Event event = new Event(null, null, null, null, null, null, null);
+		event.setCalendar(calendar);
+		event.setOverallID("getCustomEvents");
+		String gsonString = gson.toJson(event);
+		return gsonString;
+	}
+	
+	public String createEvent(String description, String location, Date start, Date end, String calendar)
+	{
+		Event event = new Event(null, null, null, description, location, null, null);
+		event.setStartdate(start);
+		event.setEnddate(end);
+		event.setCalendar(calendar);
+		event.setOverallID("createEvent");
+		String gsonString = gson.toJson(event);
+		return gsonString;
+	}
 
-	//	public String getNotes()
-	//	{
-	//		String gsonString = gson.toJson(notes);
-	//		return gsonString;
-	//	}
-	//	
-	//	public Notes setNotes(String notes)
-	//	{
-	//		this.notes = gson.fromJson(notes, Notes.class);
-	//		return this.notes;
-	//	}
+	public String deleteEvent(String eventID)
+	{
+		Event event = new Event(null, eventID, null, null, null, null, null);
+		event.setOverallID("deleteEvent");
+		String gsonString = gson.toJson(event);
+		return gsonString;
+	}
 
 	public String getQOTD()
 	{

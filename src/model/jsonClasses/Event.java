@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Event {
+	@SuppressWarnings("unused")
+	private String overallID;
 	private String activityid;
 	private String eventid;
 	private String type;
 	private String description;
 	private String location;
+	private String calendar;
 	private ArrayList<String> start;
 	private ArrayList<String> end;
 	private Date startDate;
@@ -26,6 +29,10 @@ public class Event {
 		this.end = end;
 	}
 
+	public void setOverallID(String overallID) {
+		this.overallID = overallID;
+	}
+	
 	public String getActivityid(){
 		return activityid;
 	}
@@ -56,6 +63,13 @@ public class Event {
 		return end;
 	}
 
+	public void setCalendar(String calendar) {
+		this.calendar = calendar;
+	}
+	public String getCalendar() {
+		return this.calendar;
+	}
+	
 	public void setStartdate(Date start) {
 		this.startDate = start;
 	}

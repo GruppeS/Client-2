@@ -36,8 +36,9 @@ public class CalendarPanel extends JPanel {
 	
 	public void setEvents(Vector<?> data) {
 		columnNames = new Vector<Object>();
+		columnNames.add("ID");
 		columnNames.add("Type");
-		columnNames.add("Course");
+		columnNames.add("Event");
 		columnNames.add("Start");
 		columnNames.add("End");
 		columnNames.add("Location");

@@ -2,6 +2,9 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 
 import model.JsonCreator;
@@ -20,6 +23,8 @@ public class Client implements Runnable {
 	private Events events;
 	//	private Notes notes;
 	private Forecasts forecasts;
+	
+	private String eventInCalendar;
 
 	public Client() {
 		jsonCreator = new JsonCreator();
@@ -30,6 +35,7 @@ public class Client implements Runnable {
 		screen.getMainPanel().addActionListener(new MainPanelActionListener());
 		screen.getCalendarPanel().addActionListener(new CalendarPanelActionListener());
 		screen.getCalendarListPanel().addActionListener(new CalendarListPanelActionListener());
+		screen.getEventListPanel().addActionListener(new EventListPanelActionListener());
 	}
 
 	public void run() {
@@ -108,15 +114,22 @@ public class Client implements Runnable {
 		serverConnection.send(jsonCreator.shareCalendar(username, calendar));
 	}
 
-	public Vector<Vector<Object>> getEvents()
+	public Vector<Vector<Object>> getEvents(boolean allEvents, String fromCalendar)
 	{
-		String events = serverConnection.send(jsonCreator.getEvents());
+		String events;
+
+		if(allEvents){
+			events = serverConnection.send(jsonCreator.getEvents());
+		} else {
+			events = serverConnection.send(jsonCreator.getCustomEvents(fromCalendar));
+		}
 		this.events = jsonCreator.setEvents(events);
 
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
 
 		for(int i = 0; i<this.events.getEvents().size(); i++) {
 			Vector<Object> row = new Vector<Object>();
+			row.addElement(this.events.getEvents().get(i).getEventid());
 			row.addElement(this.events.getEvents().get(i).getType());
 			row.addElement(this.events.getEvents().get(i).getDescription());
 			row.addElement((this.events.getEvents().get(i).getStartdate()).toString().substring(0,16));
@@ -127,21 +140,22 @@ public class Client implements Runnable {
 		return data;
 	}
 
-	//	public Vector<Vector<Object>> getNotes()
-	//	{
-	//		String notes = serverConnection.send(jsonCreator.getNotes());
-	//		this.notes = jsonCreator.getNotes(notes);
-	//
-	//		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-	//
-	//		for(int i = 0; i<this.notes.getNotes().size(); i++) {
-	//			Vector<Object> row = new Vector<Object>();
-	//			row.addElement(this.notes.getNotes().get(i).getType()); // TO DO
-	//			row.addElement(this.notes.getNotes().get(i).getDescription()); // TO DO
-	//			data.addElement(row);
-	//		}
-	//		return data;
-	//	}
+	public void createEvent(String description, String start, String end, String location) {
+		try {
+			Date startDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(start);
+			Date endDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(end);
+
+			serverConnection.send(jsonCreator.createEvent(description, location, startDate, endDate, eventInCalendar));
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	public void deleteEvent(String eventID)
+	{
+		serverConnection.send(jsonCreator.deleteEvent(eventID));
+	}
 
 	private class LoginPanelActionListener implements ActionListener
 	{
@@ -191,7 +205,7 @@ public class Client implements Runnable {
 
 			if(cmd.equals("CalendarBtn"))
 			{
-				screen.getCalendarPanel().setEvents(getEvents());
+				screen.getCalendarPanel().setEvents(getEvents(true, null));
 				screen.show(Screen.CALENDARPANEL);
 			}
 
@@ -248,9 +262,50 @@ public class Client implements Runnable {
 				screen.getCalendarListPanel().setCalendars(getCalendars());
 			}
 
+			if(cmd.equals("btnEvents"))
+			{
+				eventInCalendar = screen.getCalendarListPanel().getSelectedCalendar();
+
+				screen.getEventListPanel().setEvents(getEvents(false, eventInCalendar));
+
+				screen.setFrame(500, 525);
+				screen.show(Screen.EVENTLISTPANEL);
+			}
+
 			if(cmd.equals("btnBack"))
 			{
 				screen.show(Screen.MAINPANEL);
+			}
+		}
+	}
+	private class EventListPanelActionListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			String cmd = e.getActionCommand();
+
+			if(cmd.equals("btnAdd"))
+			{
+				String description = screen.getEventListPanel().getDescription();
+				String start = screen.getEventListPanel().getStart();
+				String end = screen.getEventListPanel().getEnd();
+				String location = screen.getEventListPanel().getEventLocation();
+				
+				createEvent(description, start, end, location);
+				
+				screen.getEventListPanel().setEvents(getEvents(false, eventInCalendar));
+			}
+			if(cmd.equals("btnDelete"))
+			{
+				String selectedEvent = screen.getEventListPanel().getSelectedEvent();
+				
+				deleteEvent(selectedEvent);
+				
+				screen.getEventListPanel().setEvents(getEvents(false, eventInCalendar));
+			}
+			if(cmd.equals("btnBack"))
+			{
+				screen.show(Screen.CALENDARLISTPANEL);
 			}
 		}
 	}

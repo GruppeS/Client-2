@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import java.awt.Font;
 
 public class CalendarListPanel extends JPanel {
 
@@ -18,10 +19,6 @@ public class CalendarListPanel extends JPanel {
 
 	private JButton btnBack;
 	private JButton btnDelete;
-	private JScrollPane scrollPane;
-	private JTable table;
-
-	Vector<Object> columnNames = new Vector<Object>();
 	private JCheckBox isPublic;
 	private JLabel lblCalendarName;
 	private JButton btnCreate;
@@ -30,6 +27,11 @@ public class CalendarListPanel extends JPanel {
 	private JTextField textCalendar;
 	private JLabel lblCalendars;
 	private JButton btnShare;
+	private JButton btnCalendarEvents;
+	private JScrollPane scrollPane;
+	private JTable table;
+
+	Vector<Object> columnNames = new Vector<Object>();
 
 	public CalendarListPanel() {
 		setLayout(null);
@@ -43,7 +45,7 @@ public class CalendarListPanel extends JPanel {
 		add(btnDelete);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(30, 33, 252, 138);
+		scrollPane.setBounds(30, 33, 209, 138);
 		add(scrollPane);
 		
 		textCalendar = new JTextField();
@@ -79,6 +81,11 @@ public class CalendarListPanel extends JPanel {
 		btnShare = new JButton("Share");
 		btnShare.setBounds(243, 301, 97, 23);
 		add(btnShare);
+		
+		btnCalendarEvents = new JButton("Calendar events");
+		btnCalendarEvents.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnCalendarEvents.setBounds(249, 75, 116, 54);
+		add(btnCalendarEvents);
 	}
 
 	public void setCalendars(Vector<?> data) {
@@ -117,6 +124,8 @@ public class CalendarListPanel extends JPanel {
 	
 	public void addActionListener(ActionListener l)
 	{
+		btnCalendarEvents.addActionListener(l);
+		btnCalendarEvents.setActionCommand("btnEvents");
 		btnBack.addActionListener(l);
 		btnBack.setActionCommand("btnBack");
 		btnDelete.addActionListener(l);
