@@ -12,6 +12,7 @@ import model.ServerConnection;
 import model.jsonClasses.Calendars;
 import model.jsonClasses.Events;
 import model.jsonClasses.Forecasts;
+import model.jsonClasses.UserInfo;
 import view.Screen;
 
 public class Client implements Runnable {
@@ -21,8 +22,8 @@ public class Client implements Runnable {
 	private Screen screen;
 	private Calendars calendars;
 	private Events events;
-	//	private Notes notes;
 	private Forecasts forecasts;
+	private UserInfo userInfo;
 	
 	private String eventInCalendar;
 
@@ -39,57 +40,59 @@ public class Client implements Runnable {
 	}
 
 	public void run() {
-
+		
 		screen.show(Screen.LOGINPANEL);
 		screen.setVisible(true);
 	}
 
 	public String authenticate(){
-
 		String username = null;
 		String password = null;
+		
+		serverConnection.connect();
 
 		username = screen.getLoginPanel().getUsername_Login();
 		password = screen.getLoginPanel().getPassword_Login();
 
-		return jsonCreator.login(username, password);
+		String authenticated = serverConnection.send(jsonCreator.getLogin(username, password));
+		
+		userInfo = jsonCreator.setLogin(authenticated);
+		
+		return userInfo.getAuthenticated();
 	}
 
-	public String getQuote()
-	{
+	public String getQuote() {
 		String qotd = serverConnection.send(jsonCreator.getQOTD());
 		qotd = jsonCreator.setQOTD(qotd);
 		return qotd;
 	}
 
-	public Vector<Vector<Object>> getForecast()
-	{
+	public Vector<Vector<Object>> getForecast() {
 		String forecast = serverConnection.send(jsonCreator.getForecast());
 		forecasts = jsonCreator.setForecast(forecast);
 
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
 
-		for(int i = 0; i<7; i++) {
+		for(int i = 0; i<forecasts.forecasts.size(); i++) {
 			Vector<Object> row = new Vector<Object>();
-			row.addElement(forecasts.getForecasts().get(i).getDate().substring(0,10));
-			row.addElement(forecasts.getForecasts().get(i).getCelsius());
-			row.addElement(forecasts.getForecasts().get(i).getDesc());
+			row.addElement(forecasts.forecasts.get(i).getDate().substring(0,10));
+			row.addElement(forecasts.forecasts.get(i).getCelsius());
+			row.addElement(forecasts.forecasts.get(i).getDesc());
 			data.addElement(row);
 		}
 		return data;
 	}
 
-	public Vector<Vector<Object>> getCalendars()
-	{
+	public Vector<Vector<Object>> getCalendars() {
 		String calendars = serverConnection.send(jsonCreator.getCalendars());
 		this.calendars = jsonCreator.setCalendars(calendars);
 
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
 
-		for(int i = 0; i<this.calendars.getCalendars().size(); i++) {
+		for(int i = 0; i<this.calendars.calendars.size(); i++) {
 			Vector<Object> row = new Vector<Object>();
-			row.addElement(this.calendars.getCalendars().get(i).getCalendarname());
-			row.addElement(this.calendars.getCalendars().get(i).getUsername());
+			row.addElement(this.calendars.calendars.get(i).getCalendarname());
+			row.addElement(this.calendars.calendars.get(i).getUsername());
 			data.addElement(row);
 		}
 		return data;
@@ -99,11 +102,10 @@ public class Client implements Runnable {
 		serverConnection.send(jsonCreator.createCalendar(calendar, isPublic));
 	}
 
-	public void deleteCalendar(String selectedCalendar)
-	{
-		for(int i = 0; i<this.calendars.getCalendars().size(); i++) {
-			if(this.calendars.getCalendars().get(i).getCalendarname().equals(selectedCalendar)) {
-				String json = jsonCreator.deleteCalendar(this.calendars.getCalendars().get(i).getCalendarname());
+	public void deleteCalendar(String selectedCalendar) {
+		for(int i = 0; i<this.calendars.calendars.size(); i++) {
+			if(this.calendars.calendars.get(i).getCalendarname().equals(selectedCalendar)) {
+				String json = jsonCreator.deleteCalendar(this.calendars.calendars.get(i).getCalendarname());
 				serverConnection.send(json);
 				break;
 			}
@@ -114,8 +116,7 @@ public class Client implements Runnable {
 		serverConnection.send(jsonCreator.shareCalendar(username, calendar));
 	}
 
-	public Vector<Vector<Object>> getEvents(boolean allEvents, String fromCalendar)
-	{
+	public Vector<Vector<Object>> getEvents(boolean allEvents, String fromCalendar) {
 		String events;
 
 		if(allEvents){
@@ -127,14 +128,15 @@ public class Client implements Runnable {
 
 		Vector<Vector<Object>> data = new Vector<Vector<Object>>();
 
-		for(int i = 0; i<this.events.getEvents().size(); i++) {
+		for(int i = 0; i<this.events.events.size(); i++) {
 			Vector<Object> row = new Vector<Object>();
-			row.addElement(this.events.getEvents().get(i).getEventid());
-			row.addElement(this.events.getEvents().get(i).getType());
-			row.addElement(this.events.getEvents().get(i).getDescription());
-			row.addElement((this.events.getEvents().get(i).getStartdate()).toString().substring(0,16));
-			row.addElement((this.events.getEvents().get(i).getEnddate()).toString().substring(0,16));
-			row.addElement(this.events.getEvents().get(i).getLocation());
+			row.addElement(this.events.events.get(i).getEventid());
+			row.addElement(this.events.events.get(i).getType());
+			row.addElement(this.events.events.get(i).getDescription());
+			row.addElement((this.events.events.get(i).getStartdate()).toString().substring(0,16));
+			row.addElement((this.events.events.get(i).getEnddate()).toString().substring(0,16));
+			row.addElement(this.events.events.get(i).getLocation());
+			row.addElement(this.events.events.get(i).getNote());
 			data.addElement(row);
 		}
 		return data;
@@ -152,9 +154,16 @@ public class Client implements Runnable {
 		}		
 	}
 	
-	public void deleteEvent(String eventID)
-	{
+	public void deleteEvent(String eventID) {
 		serverConnection.send(jsonCreator.deleteEvent(eventID));
+	}
+	
+	public void createNote(String eventID, String note) {
+		serverConnection.send(jsonCreator.createNote(eventID, note));
+	}
+	
+	public void deleteNote(String eventID) {
+		serverConnection.send(jsonCreator.deleteNote(eventID));
 	}
 
 	private class LoginPanelActionListener implements ActionListener
@@ -165,9 +174,7 @@ public class Client implements Runnable {
 
 			if(cmd.equals("LoginBtn"))
 			{
-				serverConnection.connect();
-
-				switch(serverConnection.send(authenticate())) {
+				switch(authenticate()) {
 				default:
 					System.exit(0);
 					break;
@@ -222,15 +229,28 @@ public class Client implements Runnable {
 		{
 			String cmd = e.getActionCommand();
 
-			if(cmd.equals("CalendarsBtn"))
+			if(cmd.equals("btnCalendars"))
 			{
 				screen.getCalendarListPanel().setCalendars(getCalendars());
 				screen.show(Screen.CALENDARLISTPANEL);
 			}
 
-			if(cmd.equals("BackBtn"))
+			if(cmd.equals("btnBack"))
 			{
 				screen.show(Screen.MAINPANEL);
+			}
+			
+			if(cmd.equals("btnAddNote")) {
+				String selectedEvent = screen.getCalendarPanel().getSelectedEvent();
+				String note = screen.getCalendarPanel().getNote();
+				createNote(selectedEvent, note);
+				screen.getCalendarPanel().setEvents(getEvents(true, null));
+			}
+			
+			if(cmd.equals("btnDeleteNote")) {
+				String selectedEvent = screen.getCalendarPanel().getSelectedEvent();
+				deleteNote(selectedEvent);
+				screen.getCalendarPanel().setEvents(getEvents(true, null));
 			}
 		}
 	}

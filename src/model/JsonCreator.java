@@ -18,7 +18,6 @@ public class JsonCreator {
 	private UserInfo userInfo;
 	private Calendars calendars;
 	private Events events;
-	//	private Notes notes;
 	private QOTD qotd;
 	private Forecasts forecasts;
 
@@ -27,17 +26,21 @@ public class JsonCreator {
 		userInfo = new UserInfo();
 		calendars = new Calendars();
 		events = new Events();
-		//		notes = new Notes();
 		qotd = new QOTD();
 		forecasts = new Forecasts();
 	}
 
-	public String login(String username, String password)
+	public String getLogin(String username, String password)
 	{
 		userInfo.setUsername(username);
 		userInfo.setPassword(password);
 		String gsonString = gson.toJson(userInfo);
 		return gsonString;
+	}
+	
+	public UserInfo setLogin(String authenticated) {
+		this.userInfo = gson.fromJson(authenticated, UserInfo.class);
+		return this.userInfo;
 	}
 
 	public String getCalendars()
@@ -112,6 +115,23 @@ public class JsonCreator {
 	{
 		Event event = new Event(null, eventID, null, null, null, null, null);
 		event.setOverallID("deleteEvent");
+		String gsonString = gson.toJson(event);
+		return gsonString;
+	}
+	
+	public String createNote(String eventID, String note)
+	{
+		Event event = new Event(null, eventID, null, null, null, null, null);
+		event.setNote(note);
+		event.setOverallID("createNote");
+		String gsonString = gson.toJson(event);
+		return gsonString;
+	}
+	
+	public String deleteNote(String eventID)
+	{
+		Event event = new Event(null, eventID, null, null, null, null, null);
+		event.setOverallID("deleteNote");
 		String gsonString = gson.toJson(event);
 		return gsonString;
 	}

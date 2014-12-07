@@ -2,6 +2,7 @@ package model.jsonClasses;
 
 public class QOTD {
 
+	@SuppressWarnings("unused")
 	private String overallID = "getQuote";
 	private String quote;
 
