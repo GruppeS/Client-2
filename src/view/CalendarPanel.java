@@ -7,8 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 public class CalendarPanel extends JPanel {
 
@@ -27,31 +27,35 @@ public class CalendarPanel extends JPanel {
 		setLayout(null);
 		
 		btnBack = new JButton("Back");
-		btnBack.setBounds(20, 359, 97, 23);
+		btnBack.setBounds(191, 361, 97, 23);
 		add(btnBack);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 21, 341, 281);
+		scrollPane.setBounds(10, 52, 725, 262);
 		add(scrollPane);
 		
 		btnCalendars = new JButton("Calendars");
-		btnCalendars.setBounds(264, 359, 97, 23);
+		btnCalendars.setBounds(435, 361, 97, 23);
 		add(btnCalendars);
 		
 		btnAddNote = new JButton("Add note");
-		btnAddNote.setBounds(272, 313, 89, 23);
+		btnAddNote.setBounds(443, 327, 89, 23);
 		add(btnAddNote);
 		
 		textNote = new JTextField();
-		textNote.setBounds(20, 313, 230, 23);
+		textNote.setBounds(191, 327, 230, 23);
 		add(textNote);
 		textNote.setColumns(10);
 		
 		btnDeleteNote = new JButton("Delete note");
-		btnDeleteNote.setBounds(141, 345, 109, 23);
+		btnDeleteNote.setBounds(309, 361, 109, 23);
 		add(btnDeleteNote);
 	}
 	
+	/**
+	 * Sets events table
+	 * @param data
+	 */
 	public void setEvents(Vector<?> data) {
 		columnNames = new Vector<Object>();
 		columnNames.add("ID");
@@ -66,6 +70,9 @@ public class CalendarPanel extends JPanel {
 		scrollPane.setViewportView(table);
 	}
 	
+	/**
+	 * @return selectedEvent
+	 */
 	public String getSelectedEvent() {
 		String selectedEvent;
 		
@@ -81,6 +88,9 @@ public class CalendarPanel extends JPanel {
 		return selectedEvent;
 	}
 	
+	/**
+	 * @return note text
+	 */
 	public String getNote() {
 		return textNote.getText();
 	}

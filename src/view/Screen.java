@@ -13,13 +13,17 @@ public class Screen extends JFrame
 	public static final String LOGINPANEL = "1";
 	public static final String MAINPANEL = "2";
 	public static final String CALENDARPANEL = "3";
-	public static final String CALENDARLISTPANEL = "4";
-	public static final String EVENTLISTPANEL = "5";
+	public static final String CALENDARDAYPANEL = "4";
+	public static final String CALENDARWEEKPANEL = "5";
+	public static final String CALENDARLISTPANEL = "6";
+	public static final String EVENTLISTPANEL = "7";
 
 	private JPanel contentPane;
 	private LoginPanel loginPanel;
 	private MainPanel mainPanel;
 	private CalendarPanel calendarPanel;
+	private CalendarDayPanel calendarDayPanel;
+	private CalendarWeekPanel calendarWeekPanel;
 	private CalendarListPanel calendarListPanel;
 	private EventListPanel eventListPanel;
 
@@ -29,7 +33,7 @@ public class Screen extends JFrame
 	{
 		setTitle("Calendar");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(0, 0, 400, 425);
+		setBounds(100, 100, 400, 425);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		setContentPane(contentPane);
@@ -44,6 +48,12 @@ public class Screen extends JFrame
 		calendarPanel = new CalendarPanel();
 		contentPane.add(calendarPanel, CALENDARPANEL);
 		
+		calendarDayPanel = new CalendarDayPanel();
+		contentPane.add(calendarDayPanel, CALENDARDAYPANEL);
+	
+		calendarWeekPanel = new CalendarWeekPanel();
+		contentPane.add(calendarWeekPanel, CALENDARWEEKPANEL);
+		
 		calendarListPanel = new CalendarListPanel();
 		contentPane.add(calendarListPanel, CALENDARLISTPANEL);
 		
@@ -53,8 +63,12 @@ public class Screen extends JFrame
 		c = (CardLayout) getContentPane().getLayout();
 	}
 
-	public void setFrame(int height, int width) {
-		setBounds(0, 0, height, width);
+	public void setFrame(int width, int height) {
+		setBounds(100, 100, width, height);
+	}
+	
+	public void resetFrame() {
+		setBounds(100, 100, 400, 425);
 	}
 	
 	public LoginPanel getLoginPanel() {
@@ -67,6 +81,14 @@ public class Screen extends JFrame
 	
 	public CalendarPanel getCalendarPanel() {
 		return calendarPanel;
+	}
+	
+	public CalendarDayPanel getCalendarDayPanel() {
+		return calendarDayPanel;
+	}
+	
+	public CalendarWeekPanel getCalendarWeekPanel() {
+		return calendarWeekPanel;
 	}
 	
 	public CalendarListPanel getCalendarListPanel() {

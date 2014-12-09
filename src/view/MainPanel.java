@@ -62,6 +62,10 @@ public class MainPanel extends JPanel {
 		btnCalendar.setActionCommand("CalendarBtn");
 	}
 	
+	/**
+	 * Sets forecasts table
+	 * @param data
+	 */
 	public void setWeather(Vector<?> data) {
 		columnNames = new Vector<Object>();
 		columnNames.add("Day");
@@ -72,6 +76,10 @@ public class MainPanel extends JPanel {
 		scrollPane.setViewportView(table);
 	}
 	
+	/**
+	 * Sets quote
+	 * @param quote
+	 */
 	public void setQuote(String quote) {
 		textArea.setText(quote);
 	}

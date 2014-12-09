@@ -106,6 +106,10 @@ public class LoginPanel extends JPanel{
 		btnExit.setActionCommand("ExitBtn");
 	}
 
+	/**
+	 * Shows error labels
+	 * @param action
+	 */
 	public void incorrect(int action)
 	{
 		switch (action){

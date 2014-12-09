@@ -88,6 +88,10 @@ public class CalendarListPanel extends JPanel {
 		add(btnCalendarEvents);
 	}
 
+	/**
+	 * Sets calendars table
+	 * @param data
+	 */
 	public void setCalendars(Vector<?> data) {
 		columnNames = new Vector<Object>();
 		columnNames.add("Calendar");
@@ -97,6 +101,9 @@ public class CalendarListPanel extends JPanel {
 		scrollPane.setViewportView(table);
 	}
 	
+	/**
+	 * @return Selected calendar
+	 */
 	public String getSelectedCalendar() {
 		String selectedCalendar;
 		
@@ -112,12 +119,21 @@ public class CalendarListPanel extends JPanel {
 		return selectedCalendar;
 	}
 	
+	/**
+	 * @return calendar name
+	 */
 	public String getCalendar() {
 		return textCalendar.getText();
 	}
+	/**
+	 * @return isPublic
+	 */
 	public boolean getIsPublic() {
 		return isPublic.isSelected();
 	}
+	/**
+	 * @return shareWith
+	 */
 	public String getShareWith() {
 		return textShare.getText();
 	}

@@ -1,5 +1,8 @@
 package model.jsonClasses;
 
+/**
+ * Json class used to get quote of the day
+ */
 public class QOTD {
 
 	@SuppressWarnings("unused")

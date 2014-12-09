@@ -1,5 +1,8 @@
 package model.jsonClasses;
 
+/**
+ * Json class for used for logging in
+ */
 public class UserInfo {
 
 	@SuppressWarnings("unused")

@@ -8,13 +8,19 @@ import java.net.UnknownHostException;
 
 public class ServerConnection {
 
+	private Encryption encryption = new Encryption();
 	private Socket clientSocket;
-	private ObjectOutputStream output;
 	private ObjectInputStream input;
+	private ObjectOutputStream output;
+	private String serverIP = new Config().serverIP;
+	private int port = new Config().port;
 
+	/**
+	 * Connects to server
+	 */
 	public void connect() {
-		try {
-			clientSocket = new Socket("localhost", 8888);
+		try {			
+			clientSocket = new Socket(serverIP, port);
 			output = new ObjectOutputStream(clientSocket.getOutputStream());
 			output.flush();
 			input = new ObjectInputStream(clientSocket.getInputStream());
@@ -25,24 +31,36 @@ public class ServerConnection {
 		}
 	}
 
+	/**
+	 * Sends an encrypted json
+	 * Recieves a decrypted json
+	 * @param json
+	 * @return replyDecrypted
+	 */
 	public String send(String json) {
-		String reply = null;
+
+		String replyDecrypted = null;
+
 		try {
 			System.out.println("Outgoing: " + json);
-			output.writeObject(json);
+			output.writeObject(encryption.encrypt(json));
 			output.flush();
-			reply = (String) input.readObject();
-			System.out.println("Incomming: " + reply);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			byte[] replyEncrypted = (byte[]) input.readObject();
+			replyDecrypted = encryption.decrypt(replyEncrypted);
+			System.out.println("Incomming: " + replyDecrypted);
+		} catch (IOException | ClassNotFoundException e) {
 			System.exit(0);
 		}
-		return reply;
+		return replyDecrypted;
 	}
 
+	/**
+	 * Closes connection (LogOut)
+	 */
 	public void close() {
 		try {
+			input.close();
+			output.close();
 			clientSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();

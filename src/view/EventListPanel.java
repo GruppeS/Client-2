@@ -100,6 +100,9 @@ public class EventListPanel extends JPanel {
 		add(btnBack);
 	}
 
+	/**
+	 * @return selectedEvent
+	 */
 	public String getSelectedEvent() {
 		String selectedEvent;
 
@@ -115,19 +118,35 @@ public class EventListPanel extends JPanel {
 		return selectedEvent;
 	}
 
+	/**
+	 * @return Description
+	 */
 	public String getDescription() {
 		return textDescription.getText();
 	}
+	/**
+	 * @return Start
+	 */
 	public String getStart() {
 		return textStart.getText();
 	}
+	/**
+	 * @return End
+	 */
 	public String getEnd() {
 		return textEnd.getText();
 	}
+	/**
+	 * @return Location
+	 */
 	public String getEventLocation() {
 		return textLocation.getText();
 	}
 
+	/**
+	 * Sets events table
+	 * @param data
+	 */
 	public void setEvents(Vector<?> data) {
 		columnNames = new Vector<Object>();
 		columnNames.add("ID");
